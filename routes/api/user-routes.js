@@ -1,11 +1,15 @@
 const app = require('express')
 const router = app.Router()
-const { User, update } = require('../../models/User')
+const User = require('../../models/User')
 
 // GET /api/users
 router.get('/', (req, res) => {
     // tap into user model and run .findAll()
-    User.findAll()
+    User.findAll({
+        attributes: {
+            exclude: ['password'],
+        },
+    })
         .then(users => res.json(users))
         .catch(err => {
             console.error(err)
@@ -18,10 +22,9 @@ router.get('/', (req, res) => {
 
 router.get('/:id', ({ req }, res) => {
     User.findOne({
-        // find a user
+        attributes: { exclude: ['password'] },
         where: {
-            // where
-            id: req.params.id, // the id is the same as the one passed into the URL
+            id: req.params.id,
         },
     })
         .then(user => {
@@ -39,6 +42,8 @@ router.get('/:id', ({ req }, res) => {
         })
 })
 
+// POST /api/users (create a user)
+
 /* 
 INSERT INTO users
   (username, email, password)
@@ -46,7 +51,6 @@ VALUES
   ("John", "John@gmail.com", "password1234");
 */
 
-// POST /api/users
 router.post('/', (req, res) => {
     User.create({
         username: req.body.username,
@@ -56,7 +60,7 @@ router.post('/', (req, res) => {
         .then(newUser => res.json(newUser))
         .catch(err => {
             console.error(err)
-            res.status(500).json.err
+            res.status(500).json({ message: 'User already exists', data: err })
         })
 })
 

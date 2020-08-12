@@ -1,26 +1,28 @@
 {
-  "name": "technews",
-  "version": "1.0.0",
-  "description": "news-based site with a coding theme",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nol166/technews.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/nol166/technews/issues"
-  },
-  "homepage": "https://github.com/nol166/technews#readme",
-  "dependencies": {
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "mysql2": "^2.1.0",
-    "sequelize": "^6.3.4"
-  }
+    "name": "technews",
+    "version": "1.0.0",
+    "description": "news-based site with a coding theme",
+    "main": "index.js",
+    "scripts": {
+        "start": "node server",
+        "dev": "nodemon server",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nol166/technews.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/nol166/technews/issues"
+    },
+    "homepage": "https://github.com/nol166/technews#readme",
+    "dependencies": {
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "mysql2": "^2.1.0",
+        "sequelize": "^6.3.4"
+    }
 }

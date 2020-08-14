@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
     // tap into user model and run .findAll()
     User.findAll({
         attributes: {
-            exclude: ['password'],
+            // exclude: ['password'],
         },
     })
         .then(users => res.json(users))
@@ -71,10 +71,11 @@ UPDATE users
 SET username = "john", email = "john@gmail.com", password = "newPassword1234"
 WHERE id = 1;
  */
-router.put('/id', (req, res) => {
+router.put('/:id', (req, res) => {
     //* expects {username: 'john', email: 'john@gmail.com', password: 'password1234'}
     // if req.body has exact key/value pairs, send it over
     User.update(req.body, {
+        individualHooks: true,
         where: {
             id: req.params.id,
         },

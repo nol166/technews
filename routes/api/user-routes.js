@@ -4,7 +4,6 @@ const User = require('../../models/User')
 
 // GET /api/users
 router.get('/', (req, res) => {
-    // tap into user model and run .findAll()
     User.findAll({
         attributes: {
             // exclude: ['password'],
@@ -18,7 +17,7 @@ router.get('/', (req, res) => {
 })
 
 // GET /api/users/2
-//* SELECT * FROM users WHERE id = 1
+// SELECT * FROM users WHERE id = 1
 
 router.get('/:id', ({ req }, res) => {
     User.findOne({
@@ -28,17 +27,15 @@ router.get('/:id', ({ req }, res) => {
         },
     })
         .then(user => {
-            // then
-            !user // if the user doesn't exist
+            !user
                 ? res
                       .status(404)
-                      .json({ message: 'No user found with that ID :-/' }) // let the user know
-                : res.json(user) // otherwise, just send that JSON of the user back
+                      .json({ message: 'No user found with that ID :-/' })
+                : res.json(user)
         })
         .catch(err => {
-            // If anything goes wrong
-            console.error(err) // log out the error
-            res.status(500).json(err) // and send a 500 status code
+            console.error(err)
+            res.status(500).json(err)
         })
 })
 
@@ -64,6 +61,28 @@ router.post('/', (req, res) => {
         })
 })
 
+router.post('/login', (req, res) => {
+    // expects { email: "jm@gmail.com", password: '1234'}
+    User.findOne({
+        where: {
+            email: req.body.email,
+        },
+    }).then(user => {
+        if (!user) {
+            res.status(400).json({ message: 'No user found ' })
+            return
+        }
+
+        const validPassword = user.checkPassword(req.body.password)
+        if (!validPassword) {
+            res.status(400).json({ message: 'incorrect password!' })
+            return
+        }
+
+        res.json({ user: user, message: 'Logged in!' })
+    })
+})
+
 // PUT /api/users/2 (aka update)
 
 /* 
@@ -71,8 +90,9 @@ UPDATE users
 SET username = "john", email = "john@gmail.com", password = "newPassword1234"
 WHERE id = 1;
  */
+
 router.put('/:id', (req, res) => {
-    //* expects {username: 'john', email: 'john@gmail.com', password: 'password1234'}
+    // expects {username: 'john', email: 'john@gmail.com', password: 'password1234'}
     // if req.body has exact key/value pairs, send it over
     User.update(req.body, {
         individualHooks: true,
